@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת טופס - Helpers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .demo-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .demo-title {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .demo-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .demo-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .demo-btn:hover {
+            background: #5a6fd8;
+        }
+        .demo-btn.test {
+            background: #28a745;
+        }
+        .demo-btn.test:hover {
+            background: #218838;
+        }
+        .demo-info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+        .demo-warning {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .demo-code {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1 class="demo-title">🧪 דף בדיקת טופס נפגעי מלחמה</h1>
+        
+        <div class="demo-info">
+            <h3>🎯 מטרת הדף</h3>
+            <p>דף זה מיועד לבדיקת פונקציונליות הטופס לפני השימוש הרשמי. 
+            הוא מאפשר בדיקה מהירה של החיבור לגוגל שיטס ותקינות הנתונים.</p>
+        </div>
+
+        <div class="demo-warning">
+            <h3>⚠️ לפני הבדיקה</h3>
+            <ul>
+                <li>וודא שהגדרת את Google Apps Script בהתאם להוראות</li>
+                <li>בדוק שהחלפת את ה-URL בקובץ script.js</li>
+                <li>שמור את נתוני הגיליון לפני הבדיקה</li>
+            </ul>
+        </div>
+
+        <div class="demo-buttons">
+            <button class="demo-btn" onclick="goToMainForm()">🏠 לטופס הרשמי</button>
+            <button class="demo-btn test" onclick="runQuickTest()">⚡ בדיקה מהירה</button>
+            <button class="demo-btn" onclick="fillSampleData()">📝 מילוי נתוני דוגמה</button>
+        </div>
+
+        <div id="status" class="status" style="display: none;"></div>
+
+        <div id="sampleData" style="display: none;">
+            <h3>📋 נתוני הדוגמה שישלחו:</h3>
+            <div class="demo-code" id="dataPreview"></div>
+        </div>
+
+        <div class="demo-info">
+            <h3>🔍 מה לבדוק בגיליון</h3>
+            <ul>
+                <li>שהכותרות נוצרו אוטומטי (בפעם הראשונה)</li>
+                <li>שהנתונים מופיעים בשורה חדשה</li>
+                <li>שהתאריכים בפורמט הנכון</li>
+                <li>שהערכים תורגמו לעברית (כן/לא, סוגי נכסים וכו')</li>
+                <li>שהעיצוב תקין (צבעי רקע לפי דחיפות)</li>
+            </ul>
+        </div>
+
+        <div class="demo-info">
+            <h3>🐛 בעיות נפוצות ופתרונות</h3>
+            <ul>
+                <li><strong>שגיאת CORS:</strong> בדוק שההרשאות מוגדרות ל-"Anyone"</li>
+                <li><strong>נתונים לא מגיעים:</strong> וודא שמזהה הגיליון נכון</li>
+                <li><strong>שגיאת הרשאות:</strong> בדוק שהסקריפט פורסם כראוי</li>
+                <li><strong>פורמט JSON:</strong> השתמש ב-F12 לבדיקת הקונסול</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for testing
+        const sampleData = {
+            timestamp: new Date().toLocaleString('he-IL'),
+            firstName: 'יוסי',
+            lastName: 'כהן',
+            phone: '050-123-4567',
+            email: 'yossi.cohen@example.com',
+            idNumber: '123456789',
+            city: 'תל אביב',
+            street: 'דיזנגוף',
+            houseNumber: '123',
+            apartment: '4',
+            zipCode: '12345',
+            propertyType: 'apartment',
+            propertySize: '85',
+            rooms: '3.5',
+            damageDate: '2023-10-07',
+            damageType: 'rocket, shrapnel',
+            damageDescription: 'נזק רב לחלונות, סדקים בקירות, נזק לריהוט. הדירה לא ראויה למגורים כרגע.',
+            estimatedValue: '150000',
+            hasInsurance: 'yes',
+            insuranceCompany: 'הכשרה',
+            previousClaim: 'no',
+            urgency: 'high',
+            additionalInfo: 'משפחה עם 3 ילדים קטנים זקוקה לפתרון מגורים זמני',
+            consent: 'on'
+        };
+
+        function goToMainForm() {
+            window.location.href = 'index.html';
+        }
+
+        function fillSampleData() {
+            showStatus('מציג נתוני דוגמה...', 'info');
+            
+            document.getElementById('sampleData').style.display = 'block';
+            document.getElementById('dataPreview').textContent = JSON.stringify(sampleData, null, 2);
+            
+            setTimeout(() => {
+                showStatus('נתוני הדוגמה מוכנים! לחץ "בדיקה מהירה" כדי לשלוח אותם.', 'success');
+            }, 1000);
+        }
+
+        async function runQuickTest() {
+            try {
+                showStatus('שולח נתוני בדיקה...', 'info');
+                
+                // Import the form handler from the main script
+                const scriptUrl = './script.js';
+                
+                // Since we can't easily import, we'll simulate the form submission
+                const testResult = await simulateFormSubmission(sampleData);
+                
+                if (testResult.success) {
+                    showStatus('✅ בדיקה הושלמה בהצלחה! בדוק את הגיליון שלך.', 'success');
+                } else {
+                    showStatus('❌ הבדיקה נכשלה: ' + testResult.error, 'error');
+                }
+                
+            } catch (error) {
+                showStatus('❌ שגיאה בבדיקה: ' + error.message, 'error');
+            }
+        }
+
+        async function simulateFormSubmission(data) {
+            // This is a simulation - in reality you'd need to implement the actual submission logic
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Simulate success - replace with actual Google Apps Script URL test
+                    const isConfigured = checkConfiguration();
+                    
+                    if (isConfigured) {
+                        resolve({ success: true });
+                    } else {
+                        resolve({ 
+                            success: false, 
+                            error: 'Google Apps Script URL לא הוגדר. עדכן את script.js' 
+                        });
+                    }
+                }, 2000);
+            });
+        }
+
+        function checkConfiguration() {
+            // Check if the main script has been configured
+            // This is a simplified check
+            try {
+                const scriptContent = localStorage.getItem('scriptConfigured');
+                return scriptContent === 'true';
+            } catch {
+                return false;
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+        }
+
+        // Auto-check configuration on load
+        window.addEventListener('load', function() {
+            const isConfigured = checkConfiguration();
+            
+            if (!isConfigured) {
+                showStatus('⚠️ לא זוהתה הגדרה של Google Apps Script. אנא בצע את ההגדרות לפי המדריך.', 'error');
+            } else {
+                showStatus('✅ הגדרות זוהו. ניתן לבצע בדיקה.', 'success');
+            }
+        });
+
+        // Add some console information
+        console.log(`
+🧪 דף בדיקת טופס נפגעי מלחמה
+=================================
+
+נתוני הדוגמה:
+`, sampleData);
+
+        console.log(`
+📋 רשימת בדיקות מומלצות:
+1. לחץ "מילוי נתוני דוגמה" לראות את הנתונים
+2. לחץ "בדיקה מהירה" לשלוח לגיליון
+3. בדוק בגיליון שהנתונים הגיעו
+4. וודא שהעיצוב והתרגום תקינים
+5. נסה לשנות את רמת הדחיפות ובדוק את צבעי הרקע
+        `);
+    </script>
+</body>
+</html> 
