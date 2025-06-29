@@ -11,107 +11,254 @@
 </head>
 <body>
     <div class="container">
-        <div class="hero-section">
-            <h1>🔧 מוקד נזקים</h1>
-            <p>דיווח מהיר ויעיל על נזקים - נטפל בזה מיד!</p>
-        </div>
-
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-
-        <form id="damageForm">
-            <div class="form-section">
-                <h2 class="section-title">
-                    <i class="fas fa-user"></i>
-                    פרטים אישיים
-                </h2>
-                
-                <div class="form-group">
-                    <label for="firstName">שם פרטי:</label>
-                    <input type="text" id="firstName" name="firstName" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="lastName">שם משפחה:</label>
-                    <input type="text" id="lastName" name="lastName" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">מספר טלפון:</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">כתובת אימייל:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="city">עיר:</label>
-                    <input type="text" id="city" name="city" required>
+        <!-- Header -->
+        <header class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <img src="AMkelavi.png" alt="Helpers Logo" class="logo">
+                    Helpers- כאן לסייע לכם לקבל את הפיצוי שמגיע לכם
+                </h1>
+                <p class="hero-subtitle">
+                    השירות כולל לייוי משפטי ומקצועי להשגת הצעות מחיר לתיקון להליך מול מס רכוש
+                </p>
+                <div class="hero-features">
+                    <div class="feature">
+                        <i class="fas fa-gavel"></i>
+                        <span>ייעוץ משפטי מקצועי</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-calculator"></i>
+                        <span>הצעת מחיר מהטובים בשוק</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-hands-helping"></i>
+                        <span>ליווי אישי לאורך כל התהליך</span>
+                    </div>
                 </div>
             </div>
+        </header>
 
-            <div class="form-section">
-                <h2 class="section-title">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    פרטי הנזק
-                </h2>
+        <!-- Form Section -->
+        <section class="form-section">
+            <div class="form-container">
+                <h2 class="form-title">השאירו פרטים ונחזור אליכם בהקדם</h2>
+                <p class="form-subtitle">המידע שלכם מוגן ומטופל בסודיות מלאה</p>
                 
-                <div class="form-group">
-                    <label for="damageType">סוג הנזק:</label>
-                    <select id="damageType" name="damageType" required>
-                        <option value="">בחר סוג נזק</option>
-                        <option value="water">נזקי מים</option>
-                        <option value="fire">נזקי אש</option>
-                        <option value="theft">גניבה/פריצה</option>
-                        <option value="vandalism">ונדליזם</option>
-                        <option value="storm">נזקי סערה</option>
-                        <option value="electrical">נזק חשמלי</option>
-                        <option value="other">אחר</option>
-                    </select>
+                <!-- Troubleshooting Notice -->
+                <div id="troubleshootingNotice" class="troubleshooting-notice" style="display: none;">
+                    <h4>📋 הוראות לפתרון בעיות:</h4>
+                    <ul>
+                        <li>🔍 בדוק שכל השדות עם * מלאים</li>
+                        <li>📱 וודא שמספר הטלפון תקין (10 ספרות)</li>
+                        <li>🌐 בדוק חיבור לאינטרנט</li>
+                        <li>🔄 נסה לרענן את הדף (F5)</li>
+                        <li>📞 אם הבעיה נמשכת: צור קשר טלפוני</li>
+                    </ul>
+                    <button type="button" onclick="hideNotice()" class="close-notice">✖ סגור</button>
                 </div>
                 
-                <div class="form-group">
-                    <label for="damageDescription">תיאור הנזק:</label>
-                    <textarea id="damageDescription" name="damageDescription" rows="4" 
-                              placeholder="תאר בפירוט את הנזק שנגרם..." required></textarea>
+                <form id="damageForm" class="damage-form">
+                    <!-- Personal Details -->
+                    <div class="form-section-header">
+                        <i class="fas fa-user"></i>
+                        <h3>פרטים אישיים</h3>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">שם פרטי</label>
+                            <input type="text" id="firstName" name="firstName" autocomplete="given-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">שם משפחה</label>
+                            <input type="text" id="lastName" name="lastName" autocomplete="family-name">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">טלפון</label>
+                            <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="050-123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">אימייל</label>
+                            <input type="email" id="email" name="email" autocomplete="email" placeholder="example@email.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="idNumber">תעודת זהות</label>
+                        <input type="text" id="idNumber" name="idNumber" placeholder="123456789">
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-section-header">
+                        <i class="fas fa-home"></i>
+                        <h3>כתובת הנכס הפגוע</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">עיר</label>
+                        <input type="text" id="city" name="city" autocomplete="address-level2">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="street">רחוב</label>
+                            <input type="text" id="street" name="street" autocomplete="address-line1">
+                        </div>
+                        <div class="form-group">
+                            <label for="houseNumber">מספר בית</label>
+                            <input type="text" id="houseNumber" name="houseNumber" autocomplete="address-line2">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="apartment">דירה</label>
+                            <input type="text" id="apartment" name="apartment" autocomplete="address-line3">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">מיקוד</label>
+                            <input type="text" id="zipCode" name="zipCode" autocomplete="postal-code">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="propertyType">סוג נכס</label>
+                        <select id="propertyType" name="propertyType">
+                            <option value="">בחר סוג נכס</option>
+                            <option value="apartment">דירה</option>
+                            <option value="house">בית פרטי</option>
+                            <option value="business">נכס מסחרי</option>
+                            <option value="office">משרד</option>
+                            <option value="other">אחר</option>
+                        </select>
+                    </div>
+
+                    <!-- Damage Details -->
+                    <div class="form-section-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>פרטי הנזק</h3>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="damageDate">תאריך הנזק</label>
+                        <input type="date" id="damageDate" name="damageDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="damageType">סוג הנזק</label>
+                        <select id="damageType" name="damageType">
+                            <option value="">בחר סוג נזק</option>
+                            <option value="rocket">פגיעה מטיל</option>
+                            <option value="shrapnel">נפילת רסיס</option>
+                            <option value="explosion">הדף</option>
+                            <option value="fire">שריפה</option>
+                            <option value="other">אחר</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="damageDescription">תיאור הנזק</label>
+                        <textarea id="damageDescription" name="damageDescription" rows="4" placeholder="תאר בפירוט את הנזק שנגרם לנכס"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="damageScale">הערכת היקף הנזק</label>
+                        <select id="damageScale" name="damageScale">
+                            <option value="">בחר היקף נזק</option>
+                            <option value="under10k">נזק פחות מ-10,000 ש"ח (מתאים לתביעה מהירה)</option>
+                            <option value="over10k">נזק מעל ל-10,000 ש"ח (מתאים לתביעה רגילה)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="urgency">דרגת דחיפות</label>
+                        <select id="urgency" name="urgency">
+                            <option value="">בחר דרגת דחיפות</option>
+                            <option value="low">נמוכה - יש זמן</option>
+                            <option value="medium">בינונית - בחודש הקרוב</option>
+                            <option value="high">גבוהה - דחוף</option>
+                            <option value="critical">קריטית - לא ניתן להמתין</option>
+                        </select>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="form-actions">
+                        <button type="button" class="clear-btn" onclick="clearAllFormData()">
+                            <i class="fas fa-trash"></i>
+                            נקה טופס
+                        </button>
+
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            שלח פרטים ותקבל טיפול אישי
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>תודה! הפרטים נקלטו בהצלחה</h3>
+                    <p>נחזור אליך בתוך 24 שעות לתיאום פגישה ראשונית</p>
                 </div>
-                
-                <div class="form-group">
-                    <label for="urgency">רמת דחיפות: 
-                        <span class="tooltip">ℹ️
-                            <span class="tooltiptext">גבוהה - נזק שדורש טיפול מיידי<br>בינונית - נזק שדורש טיפול בימים הקרובים<br>נמוכה - נזק שאינו דחוף</span>
-                        </span>
-                    </label>
-                    <select id="urgency" name="urgency" required>
-                        <option value="">בחר רמת דחיפות</option>
-                        <option value="high">גבוהה - דורש טיפול מיידי</option>
-                        <option value="medium">בינונית - טיפול בימים הקרובים</option>
-                        <option value="low">נמוכה - לא דחוף</option>
-                    </select>
+
+                <!-- Message Dialog -->
+                <div id="messageDialog" class="message-dialog" style="display: none;">
+                    <div class="dialog-content">
+                        <div class="dialog-header">
+                            <h3><i class="fas fa-comment"></i> השאר הודעה או שאלה</h3>
+                            <button type="button" class="close-btn" onclick="closeMessageDialog()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="dialog-body">
+                            <textarea id="userMessage" placeholder="כתוב כאן את ההודעה או השאלה שלך..." rows="5"></textarea>
+                            <div class="dialog-actions">
+                                <button type="button" class="save-message-btn" onclick="saveMessage()">
+                                    <i class="fas fa-save"></i> שמור הודעה
+                                </button>
+                                <button type="button" class="cancel-btn" onclick="closeMessageDialog()">
+                                    <i class="fas fa-times"></i> ביטול
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <button type="submit" class="submit-btn">
-                <i class="fas fa-paper-plane"></i>
-                שלח דיווח וקבל טיפול מיידי
-            </button>
-        </form>
-
-        <div id="successMessage" class="success-message">
-            <div style="font-size: 3em; margin-bottom: 20px;">✅</div>
-            <h2>הדיווח נשלח בהצלחה!</h2>
-            <p>תודה על הפנייה. נציג שלנו ייצור איתך קשר בהקדם.</p>
-            <p><strong>מספר הדיווח שלך:</strong> <span id="reportNumber"></span></p>
-            
-            <div style="margin-top: 30px;">
-                <button onclick="location.reload()" class="submit-btn" style="width: auto; padding: 12px 25px;">
-                    דיווח נוסף
-                </button>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Helpers - סיוע משפטי לנפגעי המלחמה</h4>
+                    <p>אנו מתמחים בסיוע לנפגעי מלחמה להשיג את הפיצוי המגיע להם</p>
+                </div>
+                <div class="footer-section">
+                    <h4>יש לכם שאלות?</h4>
+                    <p>נשמח לענות על כל שאלה או בקשה</p>
+                    <button type="button" class="footer-message-btn" onclick="openMessageDialog()">
+                        <i class="fas fa-comment"></i>
+                        השאר הודעה או שאלה
+                    </button>
+                </div>
+                <div class="footer-section">
+                    <h4>שירותים</h4>
+                    <ul>
+                        <li>ייעוץ משפטי</li>
+                        <li>הכנת תביעות</li>
+                        <li>ליווי מול הרשות</li>
+                        <li>הצעות מחיר מבעלי מקצוע</li>
+                    </ul>
+                </div>
             </div>
-        </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Helpers - סיוע משפטי לנפגעי המלחמה. כל הזכויות שמורות.</p>
+            </div>
+        </footer>
     </div>
 
     <script src="script.js"></script>
