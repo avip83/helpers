@@ -86,7 +86,10 @@
                         </div>
                     </div>
 
-
+                    <div class="form-group">
+                        <label for="idNumber">תעודת זהות</label>
+                        <input type="text" id="idNumber" name="idNumber" placeholder="123456789">
+                    </div>
 
                     <!-- Address -->
                     <div class="form-section-header">
@@ -121,7 +124,17 @@
                         </div>
                     </div>
 
-
+                    <div class="form-group">
+                        <label for="propertyType">סוג נכס</label>
+                        <select id="propertyType" name="propertyType">
+                            <option value="">בחר סוג נכס</option>
+                            <option value="apartment">דירה</option>
+                            <option value="house">בית פרטי</option>
+                            <option value="business">נכס מסחרי</option>
+                            <option value="office">משרד</option>
+                            <option value="other">אחר</option>
+                        </select>
+                    </div>
 
                     <!-- Damage Details -->
                     <div class="form-section-header">
@@ -173,6 +186,11 @@
 
                     <!-- Action Buttons -->
                     <div class="form-actions">
+                        <button type="button" class="clear-btn" onclick="clearAllFormData()">
+                            <i class="fas fa-trash"></i>
+                            נקה טופס
+                        </button>
+
                         <button type="submit" class="submit-btn">
                             <i class="fas fa-paper-plane"></i>
                             שלח פרטים ותקבל טיפול אישי

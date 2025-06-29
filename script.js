@@ -47,12 +47,7 @@ form.addEventListener('submit', async function(e) {
     }
 });
 
-// Clear form function
-function clearAllFormData() {
-    if (confirm('האם אתה בטוח שברצונך לנקות את כל הנתונים?')) {
-        form.reset();
-    }
-}
+// Clear form function (removed - no longer needed)
 
 // Hide troubleshooting notice
 function hideNotice() {
