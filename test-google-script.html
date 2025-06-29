@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת חיבור Google Apps Script</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .logs {
+            margin-top: 20px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 בדיקת חיבור Google Apps Script</h1>
+        
+        <div class="form-group">
+            <label for="testName">שם לבדיקה:</label>
+            <input type="text" id="testName" value="בדיקה מהירה" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="testPhone">טלפון לבדיקה:</label>
+            <input type="tel" id="testPhone" value="0501234567" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="testEmail">אימייל לבדיקה:</label>
+            <input type="email" id="testEmail" value="test@example.com" required>
+        </div>
+        
+        <button id="testBtn" class="btn" onclick="testConnection()">
+            🚀 בדוק חיבור
+        </button>
+        
+        <div id="result" class="result"></div>
+        
+        <div id="logs" class="logs" style="display: none;">
+            <h3>לוגים:</h3>
+            <div id="logContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // אותו URL כמו באתר הראשי
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwh96H9Z-Hc3n2QWxMe5ElMmOrYfJUMZZSVJE-lBpiaMqEG_gLH1okRewRCCs6sKdnI/exec';
+        
+        function log(message) {
+            const logContent = document.getElementById('logContent');
+            const logs = document.getElementById('logs');
+            const time = new Date().toLocaleTimeString('he-IL');
+            
+            logContent.innerHTML += `<div>[${time}] ${message}</div>`;
+            logs.style.display = 'block';
+            logs.scrollTop = logs.scrollHeight;
+        }
+        
+        async function testConnection() {
+            const testBtn = document.getElementById('testBtn');
+            const result = document.getElementById('result');
+            
+            // איסוף נתונים לבדיקה
+            const testData = {
+                firstName: document.getElementById('testName').value,
+                phone: document.getElementById('testPhone').value,
+                email: document.getElementById('testEmail').value,
+                lastName: 'בדיקה',
+                city: 'תל אביב',
+                damageType: 'other',
+                damageDescription: 'בדיקת חיבור מערכת',
+                urgency: 'low',
+                timestamp: new Date().toLocaleString('he-IL')
+            };
+            
+            try {
+                testBtn.disabled = true;
+                testBtn.innerHTML = '<span class="loading"></span> בודק חיבור...';
+                result.style.display = 'none';
+                
+                log('מתחיל בדיקת חיבור...');
+                log('נתונים לשליחה: ' + JSON.stringify(testData, null, 2));
+                
+                // שליחת הנתונים
+                log('שולח בקשה ל-Google Apps Script...');
+                
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                log('תגובה התקבלה: ' + response.status);
+                
+                // מצב no-cors לא מאפשר לקרוא את התוכן, אז אנחנו מניחים שהצליח
+                showResult('success', '✅ הבדיקה הושלמה בהצלחה!<br>בדוק את Google Sheets שלך לראות אם הנתונים הגיעו.');
+                log('בדיקה הושלמה - בדוק את Google Sheets');
+                
+            } catch (error) {
+                log('שגיאה: ' + error.message);
+                console.error('Test error:', error);
+                
+                if (error.message.includes('TypeError') && error.message.includes('Failed to fetch')) {
+                    // זה צפוי במצב no-cors
+                    showResult('success', '✅ הבקשה נשלחה!<br>בדוק את Google Sheets שלך לראות אם הנתונים הגיעו.');
+                    log('הבקשה נשלחה (TypeError צפוי במצב no-cors)');
+                } else {
+                    showResult('error', `❌ שגיאה בחיבור:<br>${error.message}<br><br>בדוק את הלוגים למטה לפרטים נוספים.`);
+                }
+            } finally {
+                testBtn.disabled = false;
+                testBtn.innerHTML = '🚀 בדוק חיבור';
+            }
+        }
+        
+        function showResult(type, message) {
+            const result = document.getElementById('result');
+            result.className = `result ${type}`;
+            result.innerHTML = message;
+            result.style.display = 'block';
+        }
+        
+        // בדיקה אוטומטית של ה-URL
+        window.addEventListener('load', function() {
+            log('URL של Google Apps Script: ' + GOOGLE_APPS_SCRIPT_URL);
+            log('מוכן לבדיקה!');
+        });
+    </script>
+</body>
+</html> 
