@@ -30,29 +30,34 @@ form.addEventListener('submit', async function(e) {
         data.timestamp = new Date().toLocaleString('he-IL');
         data.type = 'form';
         
-        // Send to Google Sheets using same method as messages
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
+        // Show success immediately after 2 seconds (faster UX)
+        setTimeout(() => {
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        }, 2000);
+        
+        // Send to Google Sheets in the background (no-cors means we can't track it anyway)
+        fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
+        }).catch(error => {
+            // With no-cors, errors are expected and don't mean failure
+            console.log('Background submission:', error.message);
         });
-        
-        // With no-cors, assume success like in messages
-        form.style.display = 'none';
-        successMessage.style.display = 'block';
-        
-        // Scroll to success message
-        successMessage.scrollIntoView({ behavior: 'smooth' });
         
     } catch (error) {
         console.error('Error:', error);
-        // With no-cors, treat as success like in messages
-        form.style.display = 'none';
-        successMessage.style.display = 'block';
-        successMessage.scrollIntoView({ behavior: 'smooth' });
+        // Show success anyway - with no-cors we can't tell if it failed
+        setTimeout(() => {
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+        }, 2000);
     }
 });
 
@@ -118,30 +123,39 @@ async function saveMessage() {
             type: 'message'
         };
         
-        // Send to Google Sheets using no-cors mode like the test
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
+        // Show success immediately after 1.5 seconds (faster UX)
+        setTimeout(() => {
+            alert('ההודעה נשמרה בהצלחה! נחזור אליך בהקדם.');
+            document.getElementById('userMessage').value = '';
+            closeMessageDialog();
+        }, 1500);
+        
+        // Send to Google Sheets in the background
+        fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(messageData)
+        }).catch(error => {
+            // With no-cors, errors are expected and don't mean failure
+            console.log('Background message submission:', error.message);
         });
-        
-        // With no-cors, we can't check response.ok, so assume success
-        alert('ההודעה נשמרה בהצלחה! נחזור אליך בהקדם.');
-        document.getElementById('userMessage').value = '';
-        closeMessageDialog();
         
     } catch (error) {
         console.error('Error:', error);
-        // With no-cors, many "errors" are actually successful submissions
-        alert('ההודעה נשלחה! אם זה לא עבד, אנא נסה שוב.');
-        document.getElementById('userMessage').value = '';
-        closeMessageDialog();
+        // Show success anyway - with no-cors we can't tell if it failed
+        setTimeout(() => {
+            alert('ההודעה נשלחה! אם זה לא עבד, אנא נסה שוב.');
+            document.getElementById('userMessage').value = '';
+            closeMessageDialog();
+        }, 1500);
     } finally {
-        // Restore button
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = originalText;
+        // Restore button after short delay
+        setTimeout(() => {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = originalText;
+        }, 1500);
     }
 }
